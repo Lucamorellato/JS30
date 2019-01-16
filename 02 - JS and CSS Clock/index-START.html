@@ -57,16 +57,16 @@
     }
 
     .hand {
-      width: 50%;
+      width: 51%;
       height: 10px;
       background: #222;
       position: absolute;
       top: 50%;
-      border-radius: 10px;
+      border-radius: 10px 5px 5px 10px;
       transform-origin: 100%;
       transform: rotate(90deg);
       /* transition: all 0.5s; */
-      transition-timing-function:cubic-bezier(0.1, 2.7, 0.58, 1);
+      /* transition-timing-function:cubic-bezier(0.1, 5.7, 0.58, 1); */
     }
 
   </style>
@@ -102,14 +102,14 @@
         secondHand.style.transition = `none`;
       } 
       else {
-        secondHand.style.transition = `all 0.5s`;
+        secondHand.style.transition = `transform 0.3s cubic-bezier(0, 2, .58, 1)`;
       }
 
       if (minsDegrees <= 90) {
         minuteHand.style.transition = `none`;
       }
       else {
-        minuteHand.style.transition = `all 0.5s`;
+        minuteHand.style.transition = `transform 0.5s cubic-bezier(0, 2, .58, 1)`;
       }
     }
     setDate();
