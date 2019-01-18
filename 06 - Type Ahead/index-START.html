@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
+  <title>Type Ahead WORKING 👀</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,7 +15,56 @@
     </ul>
   </form>
 <script>
+
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+let cities = [];
+
+//Wes suggests this way, which uses fetch and turns the response into JSON using .json() and then used ES6 spread to push into into the CONST cities
+// fetch(endpoint)
+//   .then(response => response.json())
+//     .then(data => cities.push(...data));
+
+//I like this way much more. using LET cities
+fetch(endpoint)
+  .then(response => response.json())
+  .then(data => cities = data)
+
+
+function findMatches(wordToMatch, cities){
+  return cities.filter(place => {
+    //here we need to figure out if the city or state matches what was searched
+    const regex = new RegExp(wordToMatch, "gi");
+    return place.city.match(regex) || place.state.match(regex)
+  })
+}
+
+function displayMatches(){
+  let matchArray = findMatches(this.value, cities)
+  let html = matchArray.map(place => {
+    let regex = new RegExp(this.value, 'gi');
+    let cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>` )
+    let stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`)
+    return `
+    <li>
+      <span class="name">${cityName}, ${stateName}</span>
+      <span class="population">${numberWithCommas(place.population)}</span
+    </li>`
+  }).join("");
+  suggestions.innerHTML = html
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+
+const searchInput = document.querySelector(".search");
+const suggestions = document.querySelector(".suggestions");
+
+searchInput.addEventListener("change", displayMatches);
+searchInput.addEventListener("keyup", displayMatches);
+
 
 </script>
 </body>
