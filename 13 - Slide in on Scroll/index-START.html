@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>I AM WORKDocument</title>
 </head>
 <body>
 
@@ -43,6 +43,8 @@
   </div>
 
   <script>
+
+    //stops 
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -57,6 +59,35 @@
         if (callNow) func.apply(context, args);
       };
     }
+
+    const sliderImages = document.querySelectorAll(".slide-in");
+
+    function checkSlide(e){
+      sliderImages.forEach(sliderImage => {
+        //figuring out the value to slide in at but taking where the user is scrolled to (scrollY - innerHeight) and subtracting the height of the image / 3 to be the third height of image
+        const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 3;
+
+        //finding image bottom
+        const imageBottom = sliderImage.offsetTop + sliderImage.height;
+
+        //making a variable of when the image is halfway onto page, used to then show it
+        const isHalfShown = slideInAt > sliderImage.offsetTop;
+
+        //var of when the image is still waiting to be scrolled past
+        const IsNotScrolledPast = window.scrollY < imageBottom;
+
+        //using the variables made above to apply the class of "ACTIVE" to then show the images
+        if(isHalfShown && IsNotScrolledPast) {
+          sliderImage.classList.add("active")
+        } else {
+          sliderImage.classList.remove("active");
+        }
+      })
+    }
+
+    window.addEventListener("scroll", debounce(checkSlide));
+
+
 
   </script>
 
